@@ -32,7 +32,13 @@ public class Vector {
     }
 
     public float get(int index){
-        return ((index > 0) && (index < vector.length)) ? vector[index] : null;
+        return ((index >= 0) && (index < vector.length)) ? vector[index] : null;
+    }
+
+    public void set(int index, float elem){
+        if ((index >= 0) && (index < vector.length)) {
+            vector[index] = elem;
+        }
     }
 
     public int getSize(){

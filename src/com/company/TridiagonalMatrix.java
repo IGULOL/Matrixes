@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.*;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -54,12 +55,33 @@ public class TridiagonalMatrix {
     }
 
     public float get(int indexI, int indexJ){
-        return ((indexI > 0) && (indexI < matrix.length) && (indexJ > 0) && (indexI < matrix[0].length))
+        return ((indexI >= 0) && (indexI < matrix.length) && (indexJ > 0) && (indexI < matrix[0].length))
                 ? matrix[indexI][indexJ] : null;
+    }
+
+    public void set(int indexI, int indexJ, float elem){
+        if ((indexI >= 0) && (indexI < matrix.length) && (indexJ > 0) && (indexI < matrix[0].length)){
+            matrix[indexI][indexJ] = elem;
+        }
     }
 
     public float getSize(){
         return matrix.length;
+    }
+
+    public void Random(int N){
+        matrix = new float[N][N];
+
+        Random rnd = new Random(1);
+        matrix[0][0] = rnd.nextInt();
+        matrix[0][1] = rnd.nextInt();
+        for (int i = 1; i < N - 1; i++) {
+            matrix[i][i-1] = rnd.nextInt();
+            matrix[i][i] = rnd.nextInt();
+            matrix[i][i+1] = rnd.nextInt();
+        }
+        matrix[N - 1][N - 2] = rnd.nextInt();
+        matrix[N - 1][N - 1] = rnd.nextInt();
     }
 
     /**
