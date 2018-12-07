@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Scanner;
 
 /**
- * для работы с векторами (сложение, вычитание, скалярное умножение,
+ * Класс для работы с векторами (сложение, вычитание, скалярное умножение,
  * вычисление нормы как максимальной по модулю компоненты, считывание
  * из файла / с экрана, вывод в файл / на экран)
  */
@@ -19,11 +19,23 @@ public class Vector {
         vector = new float[size];
     }
 
+    Vector(float[] _vector) {
+        int N = _vector.length;
+
+        if (_vector != null) {
+            vector = new float[N];
+
+            for (int i = 0; i < N; ++i) {
+                vector[i] = _vector[i];
+            }
+        }
+    }
+
     public float get(int index){
         return ((index > 0) && (index < vector.length)) ? vector[index] : null;
     }
 
-    public float getSize(){
+    public int getSize(){
         return vector.length;
     }
 
@@ -62,7 +74,7 @@ public class Vector {
      */
     public void sub(Vector _vector) throws VectorOperationException {
         if (_vector.getSize() != vector.length)
-            throw new VectorOperationException("не совпадает длина");
+            throw new VectorOperationException("не совпадает длина векторов");
 
         for (int i = 0; i < vector.length; i++) {
             vector[i] = vector[i] - _vector.get(i);
@@ -113,9 +125,10 @@ public class Vector {
 
         try {
             int size = in.nextInt();
+            vector = new float[size];
 
             for (int i = 0; i < vector.length; i++) {
-                System.out.println(vector[i]);
+                vector[i] = in.nextFloat();
             }
         } catch (Exception e) {
             throw new VectorInputException("неверные данные о векторе.");
