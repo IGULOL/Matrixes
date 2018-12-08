@@ -57,43 +57,6 @@ public class Modes {
     }
 
     /**
-     * Вычисление x и x2
-     * @param a вектор
-     * @param b вектор
-     * @param c вектор
-     * @param x результат
-     */
-    private static void calcTestXAndX2(Vector a, Vector b, Vector c, Vector x){
-        Vector d = new Vector();
-        Vector x2;
-        Vector x3;
-
-        try {
-            TridiagonalMatrix matr = new TridiagonalMatrix(a, b, c);
-            d = new Vector(matr.multByVector(x));
-        } catch (Exception e) {
-            System.out.println("Что-то пошло не так.");
-        }
-
-        System.out.println("Метод прогонки:");
-        x2 = Methods.sweepMethod(a,b,c,d);
-        try {
-            System.out.println("Норма: " + x.norm(x2));
-        } catch (Exception e){
-            System.out.println("Произошла ошибка вычисления нормы.");
-        }
-
-        System.out.println("Неустойчивый метод:");
-        x3 = Methods.sweepMethod(a,b,c,d);
-        try {
-            System.out.println("Норма: " + x.norm(x3));
-        } catch (Exception e){
-            System.out.println("Произошла ошибка вычисления нормы.");
-        }
-    }
-
-
-    /**
      * Обычный режим
      * @param a вектор
      * @param b вектор
@@ -143,6 +106,42 @@ public class Modes {
             }
             System.out.println();
         } while (ch != 0);
+    }
+
+    /**
+     * Вычисление x и x2
+     * @param a вектор
+     * @param b вектор
+     * @param c вектор
+     * @param x результат
+     */
+    private static void calcTestXAndX2(Vector a, Vector b, Vector c, Vector x){
+        Vector d = new Vector();
+        Vector x2;
+        Vector x3;
+
+        try {
+            TridiagonalMatrix matr = new TridiagonalMatrix(a, b, c);
+            d = new Vector(matr.multByVector(x));
+        } catch (Exception e) {
+            System.out.println("Что-то пошло не так.");
+        }
+
+        System.out.println("Метод прогонки:");
+        x2 = Methods.sweepMethod(a,b,c,d);
+        try {
+            System.out.println("Норма: " + x.norm(x2));
+        } catch (Exception e){
+            System.out.println("Произошла ошибка вычисления нормы.");
+        }
+
+        System.out.println("Неустойчивый метод:");
+        x3 = Methods.sweepMethod(a,b,c,d);
+        try {
+            System.out.println("Норма: " + x.norm(x3));
+        } catch (Exception e){
+            System.out.println("Произошла ошибка вычисления нормы.");
+        }
     }
 
     /**
@@ -196,7 +195,41 @@ public class Modes {
         } while (ch != 0);
     }
 
+    //1 столбец — размерность системы n=10,20,...;
+    //2 столбец — погрешность метода прогонки;
+    //3 столбец — погрешность неустойчивого метода.
     public static void tableMode(){
+        System.out.print("Введите максимальное N системы: ");
+        Scanner in = new Scanner(System.in);
+        int N = in.nextInt();
 
+        Vector a = new Vector();
+        Vector b = new Vector();
+        Vector c = new Vector();
+        Vector d = new Vector();
+        Vector x = new Vector();
+        Vector x2;
+        Vector x3;
+
+        System.out.format("%15s%30s%30s\r\n","Размер системы", "Погрешн. метода прогонки", "Погрешн. неустойч. метода");
+        for (int i = 5; i <= N; i = i + 3) {
+            a.Random(N);
+            a.set(0,0);
+            b.Random(N);
+            c.Random(N);
+            c.set(N-1,0);
+            x.Random(N);
+            try {
+                TridiagonalMatrix matr = new TridiagonalMatrix(a, b, c);
+                d = new Vector(matr.multByVector(x));
+
+                x2 = Methods.sweepMethod(a,b,c,d);
+                x3 = Methods.unstableMethod(a,b,c,d);
+
+                System.out.format("%15d%30f%30f\r\n", i, x.norm(x2), x.norm(x3));
+            } catch (Exception e){
+                System.out.println("Произошла ошибка вычисления нормы.");
+            }
+        }
     }
 }
