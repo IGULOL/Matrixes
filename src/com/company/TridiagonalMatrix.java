@@ -69,19 +69,20 @@ public class TridiagonalMatrix {
         return matrix.length;
     }
 
+    private static final int Max = 200;
     public void Random(int N){
         matrix = new float[N][N];
 
         Random rnd = new Random(1);
-        matrix[0][0] = rnd.nextInt();
-        matrix[0][1] = rnd.nextInt();
+        matrix[0][0] = rnd.nextBoolean() ? rnd.nextInt(Max+1) : -rnd.nextInt(Max+1);
+        matrix[0][1] = rnd.nextBoolean() ? rnd.nextInt(Max+1) : -rnd.nextInt(Max+1);
         for (int i = 1; i < N - 1; i++) {
-            matrix[i][i-1] = rnd.nextInt();
-            matrix[i][i] = rnd.nextInt();
-            matrix[i][i+1] = rnd.nextInt();
+            matrix[i][i-1] = rnd.nextBoolean() ? rnd.nextInt(Max+1) : -rnd.nextInt(Max+1);
+            matrix[i][i] = rnd.nextBoolean() ? rnd.nextInt(Max+1) : -rnd.nextInt(Max+1);
+            matrix[i][i+1] = rnd.nextBoolean() ? rnd.nextInt(Max+1) : -rnd.nextInt(Max+1);
         }
-        matrix[N - 1][N - 2] = rnd.nextInt();
-        matrix[N - 1][N - 1] = rnd.nextInt();
+        matrix[N - 1][N - 2] = rnd.nextBoolean() ? rnd.nextInt(Max+1) : -rnd.nextInt(Max+1);
+        matrix[N - 1][N - 1] = rnd.nextBoolean() ? rnd.nextInt(Max+1) : -rnd.nextInt(Max+1);
     }
 
     /**

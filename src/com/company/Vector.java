@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.*;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -41,6 +42,16 @@ public class Vector {
         }
     }
 
+    private static final int Max = 200;
+    public void Random(int N){
+        vector = new float[N];
+
+        Random rnd = new Random();
+        for (int i = 0; i < N; i++) {
+            vector[i] = rnd.nextBoolean() ? rnd.nextInt(Max+1) : -rnd.nextInt(Max+1);
+        }
+    }
+
     public int getSize(){
         return vector.length;
     }
@@ -50,13 +61,17 @@ public class Vector {
      * @param _vector
      * @throws VectorOperationException
      */
-    public void mult(Vector _vector) throws VectorOperationException {
-        if (_vector.getSize() != vector.length)
+    public float[] mult(Vector _vector) throws VectorOperationException {
+        int N = vector.length;
+        if (_vector.getSize() != N)
             throw new VectorOperationException("не совпадает длина");
 
-        for (int i = 0; i < vector.length; i++) {
-            vector[i] = vector[i] * _vector.get(i);
+        float[] res = new float[N];
+
+        for (int i = 0; i < N; i++) {
+            res[i] = vector[i] * _vector.get(i);
         }
+        return res;
     }
 
     /**
@@ -64,13 +79,17 @@ public class Vector {
      * @param _vector
      * @throws VectorOperationException
      */
-    public void add(Vector _vector) throws VectorOperationException {
-        if (_vector.getSize() != vector.length)
+    public float[] add(Vector _vector) throws VectorOperationException {
+        int N = vector.length;
+        if (_vector.getSize() != N)
             throw new VectorOperationException("не совпадает длина");
 
+        float[] res = new float[N];
+
         for (int i = 0; i < vector.length; i++) {
-            vector[i] = vector[i] + _vector.get(i);
+            res[i] = vector[i] + _vector.get(i);
         }
+        return res;
     }
 
     /**
@@ -78,13 +97,18 @@ public class Vector {
      * @param _vector
      * @throws VectorOperationException
      */
-    public void sub(Vector _vector) throws VectorOperationException {
-        if (_vector.getSize() != vector.length)
+    public float[] sub(Vector _vector) throws VectorOperationException {
+        int N = vector.length;
+        if (_vector.getSize() != N)
             throw new VectorOperationException("не совпадает длина векторов");
 
-        for (int i = 0; i < vector.length; i++) {
-            vector[i] = vector[i] - _vector.get(i);
+        float[] res = new float[N];
+
+        for (int i = 0; i < N; i++) {
+            res[i] = vector[i] - _vector.get(i);
         }
+
+        return res;
     }
 
     /**
@@ -107,20 +131,31 @@ public class Vector {
     /**
      * Норма вектора
      * @return
-     * @throws VectorOperationException
      */
-    public float norm() throws VectorOperationException {
-        return (float) Math.sqrt(scalarMult(this));
+    public float norm(Vector x) throws VectorOperationException{
+        Vector sub = new Vector(this.sub(x));
+
+        float max = sub.get(0);
+
+        for (int i = 1; i < sub.getSize(); i++) {
+            if (sub.get(i) > max) {
+                max = sub.get(i);
+            }
+        }
+
+        return max;
     }
 
     /**
      * Печать на экран
      */
     public void print() {
-        System.out.println("Длина: " + vector.length);
-        for (int i = 0; i < vector.length; i++) {
-            System.out.println(vector[i]);
+        String str = "(";
+        for (int i = 0; i < vector.length-1; i++) {
+            str = str + vector[i] + "; ";
         }
+        str = str + vector[vector.length-1] + ")";
+        System.out.println(str);
     }
 
     /**
